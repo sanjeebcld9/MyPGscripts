@@ -3,18 +3,18 @@ name: Generate README with AI
 on:
   push:
     branches:
-      - main            # Triggers when you push to main (change to 'master' if your main branch is called master)
-  workflow_dispatch:     # Adds a manual 'Run' button in the GitHub UI for testing
+      - main            # Change to 'master' if your main branch is called master
+  workflow_dispatch:     # Allows manual trigger from GitHub UI
 
 jobs:
   generate-readme:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5    # Updated to v5 (Node 24)
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6 # Updated to v6 (Node 24)
         with:
           python-version: '3.11'
 
