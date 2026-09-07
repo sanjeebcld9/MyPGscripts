@@ -1,0 +1,34 @@
+name: Generate README with AI
+
+on:
+  push:
+    branches:
+      - main            # Triggers when you push to main (change to 'master' if your main branch is called master)
+  workflow_dispatch:     # Adds a manual 'Run' button in the GitHub UI for testing
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install readmeai
+        run: pip install readmeai
+
+      - name: Generate README
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: readmeai --repository .
+
+      - name: Commit and Push README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || (git commit -m "docs: auto-generate README via AI" && git push)
